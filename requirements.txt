@@ -1,0 +1,12 @@
+gradio==3.24.1
+huggingface-hub==0.16.4
+numpy==1.24.2
+opencv-python==4.7.0.72
+Pillow==9.3.0
+transformers==4.27.4
+lightning==2.0.1
+segment-anything @ git+https://github.com/facebookresearch/segment-anything.git@6fdee8f2727f4506cfbbe553e23b895e27956588
+groundingdino @ git+https://github.com/IDEA-Research/GroundingDINO.git@2b62f419c292ca9c518daae55512fabc3fead4a4
+pre-commit==2.20.0
+commitizen==2.27.0
+pytest==7.1.2
