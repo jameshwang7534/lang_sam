@@ -3,7 +3,7 @@
 sudo apt update
 sudo apt install -y python3-pip
 
-pip3 install -r requirements.txt
+pip3 install -r $PROJECT_ROOT/requirements.txt
 # Run the FastAPI server
 nohup uvicorn main:app --host 0.0.0.0 --port 8080 > server.log 2>&1 &
 
