@@ -57,12 +57,10 @@ def get_mask_from_base_image(base_image_url, prompt):
     try:
         # Check if the input is a URL or a base64 string
         if base_image_url.startswith("http://") or base_image_url.startswith("https://"):
-            # Fetch the image from the URL
             response = requests.get(base_image_url)
             response.raise_for_status()
             image_pil = Image.open(BytesIO(response.content)).convert("RGB")
         else:
-            # Decode the base64 string
             image_data = base64.b64decode(base_image_url)
             image_pil = Image.open(BytesIO(image_data)).convert("RGB")
         
@@ -72,7 +70,7 @@ def get_mask_from_base_image(base_image_url, prompt):
         # Aggregate all masks that correspond to the prompt
         final_mask = torch.zeros_like(masks[0])
         for mask in masks:
-            final_mask = torch.max(final_mask, mask)  # Combine masks by taking the maximum value at each pixel location
+            final_mask = torch.max(final_mask, mask)  
         
         # Convert the mask to a numpy array and then to a PIL image
         mask_np = final_mask.numpy()  
@@ -80,13 +78,10 @@ def get_mask_from_base_image(base_image_url, prompt):
         # Create an image where the object is black and the background is white
         mask_img = Image.fromarray((mask_np * 255).astype(np.uint8)).convert("L")
         
-        # Enlarge the black area by applying dilation
-        dilated_mask_img = mask_img.filter(ImageFilter.MaxFilter(65))  # Adjust the size of the dilation filter as needed
+        dilated_mask_img = mask_img.filter(ImageFilter.MaxFilter(65))  # adjust the size of the mask
         
-        # Create a white background image
         white_background = Image.new("RGB", image_pil.size, (255, 255, 255))
         
-        # Apply the mask to create a black object on a white background
         black_object_img = Image.composite(Image.new("RGB", image_pil.size, (0, 0, 0)), white_background, dilated_mask_img)
         
         return black_object_img
